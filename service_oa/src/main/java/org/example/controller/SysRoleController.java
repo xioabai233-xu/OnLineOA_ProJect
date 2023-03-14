@@ -14,9 +14,8 @@ import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.management.relation.Role;
-import javax.websocket.server.PathParam;
 import java.util.List;
+import java.util.Map;
 
 @Api(tags = "角色管理")
 @RestController
@@ -55,7 +54,7 @@ public class SysRoleController {
                                 @PathVariable Long limit,
                                 SysRoleQueryVo sysRoleQueryVo){
         // 1 创建Page对象，传递分页条件
-        Page<SysRole> pageParam = new Page<>();
+        Page<SysRole> pageParam = new Page<>(page,limit);
         // 2 判断条件是否为空，不为空进行封装
         LambdaQueryWrapper<SysRole> lqw =new LambdaQueryWrapper<>();
         String roleName = sysRoleQueryVo.getRoleName();
@@ -66,23 +65,6 @@ public class SysRoleController {
 
         return Result.ok(pageModel);
     }
-
-    // 分页查询
-    /*@ApiOperation(value = "分页查询")
-    @PutMapping("{page}/{limit}")
-    public Result QueryPageRole(@PathVariable Long page,
-                                @PathVariable Long limit,
-                                SysRoleQueryVo sysRoleQueryVo){
-        Page<SysRole> pageParam = new Page<>(page,limit);
-        LambdaQueryWrapper<SysRole> lqw =new LambdaQueryWrapper<>();
-
-        String roleName = sysRoleQueryVo.getRoleName();
-        if(!StringUtils.isEmpty(roleName)){
-            lqw.like(SysRole::getRoleName,roleName);
-        }
-        Page<SysRole> page1 = sysRoleService.page(pageParam, lqw);
-        return Result.ok(page1);
-    }*/
 
     @ApiOperation(value = "根据id查询")
     @GetMapping("get/{id}")
@@ -124,5 +106,14 @@ public class SysRoleController {
         sysRoleService.save(role);
         return Result.ok();
     }
+
+    @ApiOperation(value = "根据用户获取角色数据")
+    @GetMapping("/toAssign/{userId}")
+    public Result toAssign(@PathVariable Long userId){
+        Map<String,Object> roleMap = sysRoleService.findRoleByAdminId(userId);
+        return Result.ok(roleMap);
+    }
+
+
 
 }
