@@ -43,7 +43,7 @@ public class SysRoleServiceImpl  extends ServiceImpl<SysRoleMapper,SysRole> impl
 
         Map<String,Object> roleMap =new HashMap<>();
         /// 已分配角色列表
-        roleMap.put("assginRoleList",assignRoleList);
+        roleMap.put("assignRoleList",assignRoleList);
         /// 全部角色列表
         roleMap.put("allRoleList",allRoleList);
 
