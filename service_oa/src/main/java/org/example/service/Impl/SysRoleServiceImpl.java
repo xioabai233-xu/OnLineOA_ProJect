@@ -8,6 +8,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.example.mapper.SysRoleMapper;
 import org.example.mapper.SysUserRoleMapper;
 import org.example.service.SysRoleService;
+import org.example.service.SysUserRoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -22,21 +23,26 @@ import java.util.stream.Collectors;
 public class SysRoleServiceImpl  extends ServiceImpl<SysRoleMapper,SysRole> implements SysRoleService  {
 
     @Autowired
-    private SysUserRoleMapper sysUserRoleMapper;
+    private SysUserRoleService sysUserRoleService;
 
     @Override
     public Map<String, Object> findRoleByAdminId(Long userId) {
         /// 查询所有角色
         List<SysRole> allRoleList = this.list();
 
-        /// 拥有的角色id
-        List<SysUserRole> existUserRolesList = sysUserRoleMapper.selectList(new LambdaQueryWrapper<SysUserRole>().eq(SysUserRole::getRoleId, userId).select(SysUserRole::getRoleId));
-        List<Long> list = existUserRolesList.stream().map(p->p.getRoleId()).collect(Collectors.toList());
+        /// 拥有的角色id, 根据userid查询 角色用户关系表，查询userid对应的角色表
+        LambdaQueryWrapper<SysUserRole> lqw =new LambdaQueryWrapper<>();
+        lqw.eq(SysUserRole::getUserId,userId);
+        List<SysUserRole> list = sysUserRoleService.list(lqw);
+
+        // 从查询的用户id对应的list集合，获取所有角色id
+        List<Long> existRoleIdList = list.stream().map(p -> p.getRoleId()).collect(Collectors.toList());
+
         /// 对角色进行分类
         List<SysRole> assignRoleList =new ArrayList<>();
         for(SysRole role : allRoleList){
             /// 已分配
-            if(existUserRolesList.contains(role.getId())){
+            if(existRoleIdList.contains(role.getId())){
                 assignRoleList.add(role);
             }
         }

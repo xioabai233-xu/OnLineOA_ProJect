@@ -32,19 +32,4 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         this.updateById(sysUser);
     }
 
-    @Transactional
-    @Override
-    public void doAssign(AssignRoleVo assignRoleVo) {
-        sysUserRoleMapper.delete(new LambdaQueryWrapper<SysUserRole>().eq(SysUserRole::getUserId,assignRoleVo.getUserId()));
-
-        for(Long roleId : assignRoleVo.getRoleIdList()){
-            if(StringUtils.isEmpty(roleId)){
-                continue;
-            }
-            SysUserRole sysUserRole =new SysUserRole();
-            sysUserRole.setUserId(assignRoleVo.getUserId());  /// 用户id
-            sysUserRole.setRoleId(roleId); /// 角色id
-            sysUserRoleMapper.insert(sysUserRole);
-        }
-    }
 }

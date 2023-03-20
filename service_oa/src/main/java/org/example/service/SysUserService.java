@@ -14,5 +14,4 @@ public interface SysUserService extends IService<SysUser> {
     */
     void updateStatus(Long id , Integer status);
 
-    void doAssign(AssignRoleVo assignRoleVo);
 }

@@ -22,5 +22,5 @@ public interface SysRoleService extends IService<SysRole> {
      * @author: HongXu Li
      * @since JDK 1.8
      */
-    void doAssign(AssignRoleVo assginRoleVo);
+    void doAssign(AssignRoleVo assignRoleVo);
 }

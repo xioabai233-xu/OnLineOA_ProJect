@@ -1,6 +1,7 @@
 package org.example.controller;
 
 import com.atguigu.model.system.SysRole;
+import com.atguigu.vo.system.AssignRoleVo;
 import com.atguigu.vo.system.SysRoleQueryVo;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -25,17 +26,21 @@ public class SysRoleController {
     // 注入service
     @Autowired
     private SysRoleService sysRoleService;
+    @ApiOperation(value = "获取角色")
+    @GetMapping("/toAssign/{userId}")
+    public Result toAssign(@PathVariable Long userId){
+        Map<String, Object> map = sysRoleService.findRoleByAdminId(userId);
+        return Result.ok(map);
+    }
 
+    // 为用户分配角色(为某个用户分配多个角色--- 需要一个用户id和 多个角色id)
+    @ApiOperation(value = "为用户分配角色")
+    @PostMapping("/doAssign")
+    public Result doAssign(@RequestBody AssignRoleVo assignRoleVo){
+        sysRoleService.doAssign(assignRoleVo);
+        return Result.ok();
+    }
 
-
-
-/*    // 查询所有角色
-    @GetMapping("findAll")
-    public List<SysRole> findAll(){
-        // 调用sevice方法
-        List<SysRole> list = sysRoleService.list();
-        return list;
-    }*/
 
     // 查询所有角色
     @ApiOperation(value = "查询所有角色")
@@ -106,14 +111,5 @@ public class SysRoleController {
         sysRoleService.save(role);
         return Result.ok();
     }
-
-    @ApiOperation(value = "根据用户获取角色数据")
-    @GetMapping("/toAssign/{userId}")
-    public Result toAssign(@PathVariable Long userId){
-        Map<String,Object> roleMap = sysRoleService.findRoleByAdminId(userId);
-        return Result.ok(roleMap);
-    }
-
-
 
 }
