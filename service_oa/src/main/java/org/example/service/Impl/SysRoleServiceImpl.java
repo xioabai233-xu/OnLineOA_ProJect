@@ -58,9 +58,11 @@ public class SysRoleServiceImpl  extends ServiceImpl<SysRoleMapper,SysRole> impl
     /// 给用户分配角色
     @Override
     public void doAssign(AssignRoleVo assignRoleVo) {
-        /// 先删除
-        sysUserRoleMapper.delete(new LambdaQueryWrapper<SysUserRole>().eq(SysUserRole::getRoleId,assignRoleVo.getUserId()));
-        /// 后添加
+        /// 先删除 根据用户角色关系表里，根据userid删除
+        LambdaQueryWrapper<SysUserRole> lqw =new LambdaQueryWrapper<>();
+        lqw.eq(SysUserRole::getUserId,assignRoleVo.getUserId());
+        sysUserRoleService.remove(lqw);
+        /// 后添加 重新进行分配
         for(Long roleId : assignRoleVo.getRoleIdList()){
             if(StringUtils.isEmpty(roleId)){
                 continue;
@@ -68,7 +70,7 @@ public class SysRoleServiceImpl  extends ServiceImpl<SysRoleMapper,SysRole> impl
             SysUserRole userRole = new SysUserRole();
             userRole.setRoleId(roleId);
             userRole.setUserId(assignRoleVo.getUserId());
-            sysUserRoleMapper.insert(userRole);
+            sysUserRoleService.save(userRole);
         }
     }
 }

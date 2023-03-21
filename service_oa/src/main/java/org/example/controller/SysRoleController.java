@@ -26,6 +26,7 @@ public class SysRoleController {
     // 注入service
     @Autowired
     private SysRoleService sysRoleService;
+
     @ApiOperation(value = "获取角色")
     @GetMapping("/toAssign/{userId}")
     public Result toAssign(@PathVariable Long userId){
