@@ -1,13 +1,18 @@
 package org.example.controller;
 
 
+import com.atguigu.model.system.SysUser;
+import com.atguigu.vo.system.LoginVo;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.example.common.Exception.OAException;
+import org.example.common.MD5.MD5;
+import org.example.common.jwt.JwtHelper;
 import org.example.common.result.Result;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.example.service.SysUserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -16,13 +21,47 @@ import java.util.Map;
 @RequestMapping("admin/system/index")
 @RestController
 public class IndexController {
-
+    @Autowired
+    private SysUserService sysUserService;
     //login
     @PostMapping("login")
     @ApiOperation(value = "用户登录")
-    public Result login(){
-        Map<String,Object> map = new HashMap<>();
+    public Result login(@RequestBody LoginVo loginVo){
+        /*Map<String,Object> map = new HashMap<>();
         map.put("token","admin");
+        return Result.ok(map);*/
+
+        // 1 获取输入的用户名密码
+        String username = loginVo.getUsername();
+
+        // 2 根据用户名查询数据库
+        LambdaQueryWrapper<SysUser> lqw = new LambdaQueryWrapper<>();
+        lqw.eq(SysUser::getUsername,username);
+        SysUser sysuser = sysUserService.getOne(lqw);
+
+        // 3 用户信息是否存在
+        if(sysuser == null){
+            throw new OAException(201,"用户不存在");
+        }
+
+        // 4 判断密码
+        String password = sysuser.getPassword();
+        String passwordInput = loginVo.getPassword();
+        if(!MD5.encrypt(passwordInput).equals(password)){
+            throw new OAException(201,"密码错误");
+        }
+
+        // 5 判断用户是否被禁用
+        if(sysuser.getStatus() == 0){
+            throw new OAException(201,"该账户被禁用");
+        }
+
+        // 6 使用jwt根据用户id和用户名称生成token字符串
+        String token = JwtHelper.createToken(sysuser.getId(), sysuser.getUsername());
+
+        // 7 返回
+        Map<String,Object> map =new HashMap<>();
+        map.put("token",token);
         return Result.ok(map);
     }
 

@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.example.common.MD5.MD5;
 import org.example.common.result.Result;
 import org.example.service.SysUserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,10 +58,13 @@ public class SysUserController {
         sysUserService.updateById(user);
         return Result.ok();
     }
-
+    // 密码进行加密， 使用MD5
     @ApiOperation(value = "保存用户")
     @PostMapping("save")
     public Result save(@RequestBody SysUser user){
+        String password = user.getPassword();
+        String passWordMD5 = MD5.encrypt(password);
+        user.setPassword(passWordMD5);
         sysUserService.save(user);
         return Result.ok();
     }
