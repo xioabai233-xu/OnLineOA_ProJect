@@ -2,6 +2,7 @@ package org.example.service;
 
 import com.atguigu.model.system.SysMenu;
 import com.atguigu.vo.system.AssignMenuVo;
+import com.atguigu.vo.system.RouterVo;
 import com.baomidou.mybatisplus.extension.service.IService;
 import org.example.mapper.SysMenuMapper;
 
@@ -17,4 +18,8 @@ public interface SysMenuService extends IService<SysMenu> {
     List<SysMenu>  findMenuByRoleId(Long roleId);
 
     void doAssign(AssignMenuVo assignMenuVo);
+
+    List<RouterVo> findUserMenuListByUserId(Long userid);
+
+    List<String> findUserPermissonByUserId(Long userId);
 }

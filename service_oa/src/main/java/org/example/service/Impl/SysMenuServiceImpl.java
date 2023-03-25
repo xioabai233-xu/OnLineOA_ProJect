@@ -3,6 +3,7 @@ package org.example.service.Impl;
 import com.atguigu.model.system.SysMenu;
 import com.atguigu.model.system.SysRoleMenu;
 import com.atguigu.vo.system.AssignMenuVo;
+import com.atguigu.vo.system.RouterVo;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.example.common.Exception.OAException;
@@ -88,5 +89,19 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
             }
         });
 
+    }
+
+    @Override
+    public List<RouterVo> findUserMenuListByUserId(Long userid) {
+
+
+
+
+        return null;
+    }
+
+    @Override
+    public List<String> findUserPermissonByUserId(Long userId) {
+        return null;
     }
 }
