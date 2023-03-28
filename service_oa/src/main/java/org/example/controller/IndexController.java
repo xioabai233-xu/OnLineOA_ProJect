@@ -1,7 +1,6 @@
 package org.example.controller;
 
 
-import com.atguigu.model.system.SysMenu;
 import com.atguigu.model.system.SysUser;
 import com.atguigu.vo.system.LoginVo;
 import com.atguigu.vo.system.RouterVo;
@@ -35,12 +34,9 @@ public class IndexController {
     @PostMapping("login")
     @ApiOperation(value = "用户登录")
     public Result login(@RequestBody LoginVo loginVo){
-        /*Map<String,Object> map = new HashMap<>();
-        map.put("token","admin");
-        return Result.ok(map);*/
 
         // 1 获取输入的用户名密码
-        String username = sysUserService.getByUsername(loginVo.getUsername());
+        SysUser username = sysUserService.getByUsername(loginVo.getUsername());
 
         // 2 根据用户名查询数据库
         LambdaQueryWrapper<SysUser> lqw = new LambdaQueryWrapper<>();
@@ -89,7 +85,7 @@ public class IndexController {
         List<RouterVo> routerList = sysMenuService.findUserMenuListByUserId(userId);
 
         // 根据用户id获取用户按钮列表
-        List<String> permsList =  sysMenuService.findUserPermissonByUserId(userId);
+        List<String> permsList =  sysMenuService.findUserPermissionByUserId(userId);
 
 
         // 6 返回相应的数据

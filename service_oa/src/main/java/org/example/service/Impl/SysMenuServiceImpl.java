@@ -27,6 +27,8 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
 
     @Autowired
     private SysRoleMenuService sysRoleMenuService;
+    @Autowired
+    private SysMenuMapper sysMenuMapper;
 
     public List<SysMenu> findNodes(){
 
@@ -156,20 +158,15 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
         return routerPath;
     }
     @Override
-    public List<String> findUserPermissonByUserId(Long userId) {
-        // 判断是不是管理员 ， 如果是管理员 ， 查询所有按钮列表
+    public List<String> findUserPermissionByUserId(Long userId) {
+        //超级管理员admin账号id为：1
         List<SysMenu> sysMenuList = null;
-        if(userId.longValue() == 1){
-            // 查询所有菜单列表
-            LambdaQueryWrapper<SysMenu> lqw = new LambdaQueryWrapper<>();
-            lqw.eq(SysMenu::getStatus,1);
-            sysMenuList = baseMapper.selectList(lqw);
-        }else{
-            // 如果不是管理员
-            sysMenuList = this.dind(userId);
+        if (userId.longValue() == 1) {
+            sysMenuList = this.list(new LambdaQueryWrapper<SysMenu>().eq(SysMenu::getStatus, 1));
+        } else {
+            sysMenuList = sysMenuMapper.findListByUserId(userId);
         }
-
-        // TODO
-         return null;
+        List<String> permsList = sysMenuList.stream().filter(item -> item.getType() == 2).map(item -> item.getPerms()).collect(Collectors.toList());
+        return permsList;
     }
 }
