@@ -58,5 +58,7 @@ public class SysMenu extends BaseEntity {
 	//是否选中
 	@TableField(exist = false)
 	private boolean isSelect;
+
+
 }
 

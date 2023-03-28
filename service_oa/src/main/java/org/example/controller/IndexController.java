@@ -40,7 +40,7 @@ public class IndexController {
         return Result.ok(map);*/
 
         // 1 获取输入的用户名密码
-        String username = loginVo.getUsername();
+        String username = sysUserService.getByUsername(loginVo.getUsername());
 
         // 2 根据用户名查询数据库
         LambdaQueryWrapper<SysUser> lqw = new LambdaQueryWrapper<>();
@@ -100,7 +100,7 @@ public class IndexController {
         //TODO 返回用户可以操作菜单
         map.put("routers",routerList);
         //TODO 安徽用户可以操作的按钮
-        map.put("bottons",permsList);
+        map.put("buttons",permsList);
 
         return Result.ok(map);
     }

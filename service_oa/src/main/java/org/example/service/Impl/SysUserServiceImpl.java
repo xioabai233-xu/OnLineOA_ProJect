@@ -1,6 +1,7 @@
 package org.example.service.Impl;
 
 import com.atguigu.model.system.SysUser;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.example.mapper.SysUserMapper;
 import org.example.service.SysUserService;
@@ -19,6 +20,12 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         // 调用方法进行修改
         baseMapper.updateById(sysUser);
 
+    }
+
+    @Override
+    public SysUser getByUsername(String username) {
+
+        return this.getOne(new LambdaQueryWrapper<SysUser>().eq(SysUser::getUsername,username));
     }
 
 }

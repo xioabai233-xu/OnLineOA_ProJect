@@ -1,12 +1,7 @@
 package org.example.service;
 
-import com.atguigu.model.system.SysMenu;
 import com.atguigu.model.system.SysUser;
-import com.atguigu.vo.system.AssignRoleVo;
-import com.atguigu.vo.system.RouterVo;
 import com.baomidou.mybatisplus.extension.service.IService;
-
-import java.util.List;
 
 
 public interface SysUserService extends IService<SysUser> {
@@ -18,4 +13,5 @@ public interface SysUserService extends IService<SysUser> {
     */
     void updateStatus(Long id , Integer status);
 
+    SysUser getByUsername(String username);
 }
