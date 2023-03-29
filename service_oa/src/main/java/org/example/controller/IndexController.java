@@ -93,11 +93,10 @@ public class IndexController {
         map.put("roles","[admin]");
         map.put("name","admin");
         map.put("avatar","https://oss.aliyuncs.com/aliyun_id_photo_bucket/default_handsome.jpg");
-        //TODO 返回用户可以操作菜单
         map.put("routers",routerList);
-        //TODO 安徽用户可以操作的按钮
         map.put("buttons",permsList);
 
+        // 返回map
         return Result.ok(map);
     }
 

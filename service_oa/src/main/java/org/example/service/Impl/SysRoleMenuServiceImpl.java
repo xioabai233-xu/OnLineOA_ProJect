@@ -15,11 +15,4 @@ import java.util.List;
 public class SysRoleMenuServiceImpl extends ServiceImpl<SysRoleMenuMapper, SysRoleMenu> implements  SysRoleMenuService {
 
 
-    @Override
-    public List<SysMenu> findListByUserId(Long userid) {
-
-
-        //TODO
-        return null;
-    }
 }

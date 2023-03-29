@@ -10,5 +10,5 @@ import java.util.List;
 
 @Mapper
 public interface SysMenuMapper extends BaseMapper<SysMenu> {
-    List<SysMenu> findListByUserId(@Param("userId") Long userId);
+    List<SysMenu> findMenuListByUserId(@Param("userId") Long userId);
 }
