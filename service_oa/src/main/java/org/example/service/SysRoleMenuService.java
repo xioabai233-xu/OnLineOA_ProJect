@@ -9,5 +9,4 @@ import java.util.List;
 
 public interface SysRoleMenuService extends IService<SysRoleMenu> {
 
-    List<SysMenu> findListByUserId(Long userid);
 }

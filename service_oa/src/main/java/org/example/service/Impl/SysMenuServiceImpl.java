@@ -103,7 +103,7 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
             sysMenuList = this.list(new LambdaQueryWrapper<SysMenu>().eq(SysMenu::getStatus,1).orderByAsc(SysMenu::getSortValue));
 
         }else{
-            sysMenuList = sysRoleMenuService.findListByUserId(userid);
+            sysMenuList = sysMenuMapper.findListByUserId(userid);
         }
         // 构建树形数据
         List<SysMenu> sysMenuTreeList = MenuHelper.builderTree(sysMenuList);
@@ -146,9 +146,9 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
                     router.setChildren(builderMenu(children));
                 }
             }
+            routers.add(router);
         }
-        // TODO
-        return null;
+        return routers;
     }
     public static String getRouterPath(SysMenu menu) {
         String routerPath = "/" + menu.getPath();
