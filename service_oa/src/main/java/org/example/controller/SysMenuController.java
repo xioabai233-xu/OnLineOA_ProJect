@@ -7,34 +7,29 @@ import io.swagger.annotations.ApiOperation;
 import org.example.common.result.Result;
 import org.example.service.SysMenuService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
-@RestController
 @Api(tags = "菜单管理")
+@RestController
 @RequestMapping("/admin/system/sysMenu")
 public class SysMenuController {
 
     @Autowired
     private SysMenuService sysMenuService;
 
-    @ApiOperation(value = "菜单列表")
-    @GetMapping("/findNodes")
-    public Result findNodes(){
-        List<SysMenu> nodesList = sysMenuService.findNodes();
-        return Result.ok(nodesList);
+    @ApiOperation(value = "获取菜单")
+    @GetMapping("findNodes")
+    public Result findNodes() {
+        List<SysMenu> list = sysMenuService.findNodes();
+        return Result.ok(list);
     }
 
     @ApiOperation(value = "新增菜单")
-    @PostMapping("/save")
-    public Result save(@RequestBody @Validated SysMenu sysMenu){
-        boolean isSave = sysMenuService.save(sysMenu);
-        if(isSave){
-            return Result.ok();
-        }
-        return Result.fail();
+    @PostMapping("save")
+    public Result save(@RequestBody SysMenu permission) {
+        sysMenuService.save(permission);
+        return Result.ok();
     }
 
     @ApiOperation(value = "修改菜单")
@@ -47,34 +42,22 @@ public class SysMenuController {
     @ApiOperation(value = "删除菜单")
     @DeleteMapping("remove/{id}")
     public Result remove(@PathVariable Long id) {
-        sysMenuService.removeMenuById(id);
+        sysMenuService.removeById(id);
         return Result.ok();
     }
 
-    /**
-    * Description: 查询所有菜单和角色分配的菜单
-    * date: 2023/3/21 16:03
-    * @author: HongXu Li
-    * @since JDK 1.8
-    */
-    @ApiOperation(value = "查询所有菜单和角色分配的菜单")
-    @GetMapping("/toAssign/{roleId}")
-    public Result toAssign(@PathVariable Long roleId){  
+    @ApiOperation(value = "根据角色获取菜单")
+    @GetMapping("toAssign/{roleId}")
+    public Result toAssign(@PathVariable Long roleId) {
         List<SysMenu> list = sysMenuService.findMenuByRoleId(roleId);
         return Result.ok(list);
     }
 
-    /**
-    * Description: 角色分配菜单
-    * date: 2023/3/21 16:05
-    * @author: HongXu Li
-    * @since JDK 1.8
-    */
-    @ApiOperation(value = "角色分配菜单")
+    @ApiOperation(value = "给角色分配权限")
     @PostMapping("/doAssign")
-    public Result doAssign(@RequestBody AssignMenuVo assignMenuVo){
+    public Result doAssign(@RequestBody AssignMenuVo assignMenuVo) {
         sysMenuService.doAssign(assignMenuVo);
-                return Result.ok();
+        return Result.ok();
     }
 
 }

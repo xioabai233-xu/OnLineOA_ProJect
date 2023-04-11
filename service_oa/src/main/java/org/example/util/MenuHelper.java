@@ -1,47 +1,50 @@
 package org.example.util;
 
+
 import com.atguigu.model.system.SysMenu;
-import com.atguigu.vo.system.RouterVo;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * <p>
+ * 根据菜单数据构建菜单数据
+ * </p>
+ *
+ */
 public class MenuHelper {
+
     /**
-    * Description: 使用递归方法建菜单
-    * date: 2023/3/21 13:43
-    * @author: HongXu Li
-    * @since JDK 1.8
-    */
+     * 使用递归方法建菜单
+     * @param sysMenuList
+     * @return
+     */
     public static List<SysMenu> builderTree(List<SysMenu> sysMenuList) {
-        // 创建list结合 ， 用于最终数据
-        List<SysMenu> tree =new ArrayList<>();
-        // 遍历菜单数据
-        for(SysMenu item : sysMenuList){
-            // 递归入口
-            // parentid =0 是入口
-            if(item.getParentId().longValue() == 0){
-                tree.add(getChildren(item,sysMenuList));
+        List<SysMenu> trees = new ArrayList<>();
+        for (SysMenu sysMenu : sysMenuList) {
+            if (sysMenu.getParentId().longValue() == 0) {
+                trees.add(findChildren(sysMenu,sysMenuList));
             }
         }
-        return tree;
+        return trees;
     }
 
-    public static SysMenu getChildren(SysMenu sysMenu,
-                                      List<SysMenu> sysMenuList){
+    /**
+     * 递归查找子节点
+     * @param treeNodes
+     * @return
+     */
+    public static SysMenu findChildren(SysMenu sysMenu, List<SysMenu> treeNodes) {
         sysMenu.setChildren(new ArrayList<SysMenu>());
-        // 遍历所有菜单数据 ， 判断id和parentid对应关系
-        for(SysMenu item : sysMenuList){
-            if(sysMenu.getId().longValue() == item.getParentId().longValue() ){
-                if(sysMenu.getChildren() == null){
-                    sysMenu.setChildren(new ArrayList<SysMenu>());
+
+        for (SysMenu it : treeNodes) {
+            if(sysMenu.getId().longValue() == it.getParentId().longValue()) {
+                if (sysMenu.getChildren() == null) {
+                    sysMenu.setChildren(new ArrayList<>());
                 }
-                sysMenu.getChildren().add(getChildren(item,sysMenuList));
+                sysMenu.getChildren().add(findChildren(it,treeNodes));
             }
         }
         return sysMenu;
     }
-
-
 }

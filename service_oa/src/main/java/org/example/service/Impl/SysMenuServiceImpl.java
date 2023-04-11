@@ -17,7 +17,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
-import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -103,7 +102,7 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
             sysMenuList = this.list(new LambdaQueryWrapper<SysMenu>().eq(SysMenu::getStatus,1).orderByAsc(SysMenu::getSortValue));
 
         }else{
-            sysMenuList = sysMenuMapper.findListByUserId(userid);
+            sysMenuList = sysMenuMapper.findMenuListByUserId(userid);
         }
         // 构建树形数据
         List<SysMenu> sysMenuTreeList = MenuHelper.builderTree(sysMenuList);
@@ -164,7 +163,7 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
         if (userId.longValue() == 1) {
             sysMenuList = this.list(new LambdaQueryWrapper<SysMenu>().eq(SysMenu::getStatus, 1));
         } else {
-            sysMenuList = sysMenuMapper.findListByUserId(userId);
+            sysMenuList = sysMenuMapper.findMenuListByUserId(userId);
         }
         List<String> permsList = sysMenuList.stream().filter(item -> item.getType() == 2).map(item -> item.getPerms()).collect(Collectors.toList());
         return permsList;
