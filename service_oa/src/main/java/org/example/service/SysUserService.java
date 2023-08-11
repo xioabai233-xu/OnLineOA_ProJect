@@ -1,7 +1,11 @@
 package org.example.service;
 
 import com.atguigu.model.system.SysUser;
+import com.atguigu.vo.system.SysUserQueryVo;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
+
+import java.util.Map;
 
 
 public interface SysUserService extends IService<SysUser> {
@@ -14,4 +18,13 @@ public interface SysUserService extends IService<SysUser> {
     void updateStatus(Long id , Integer status);
 
     SysUser getByUsername(String username);
+    IPage<SysUser> pageList(Long pageIndex, Long limit, SysUserQueryVo sysUserQueryVo);
+
+    /**
+     * //根据用户名获取用户信息
+     *
+     * @param username
+     * @return java.util.Map<java.lang.String,java.lang.Object>
+     **/
+    Map<String, Object> getUserInfo(String username);
 }

@@ -2,16 +2,13 @@ package org.example.controller;
 
 import com.atguigu.model.system.SysUser;
 import com.atguigu.vo.system.SysUserQueryVo;
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.example.service.SysUserService;
 import org.example.common.MD5.MD5;
 import org.example.common.result.Result;
-import org.example.service.SysUserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -23,31 +20,17 @@ public class SysUserController {
 
     @ApiOperation(value = "用户条件分页查询")
     @GetMapping("{page}/{limit}")
-    public Result index(@PathVariable Long page,
-                        @PathVariable Long limit,
-                        SysUserQueryVo sysUserQueryVo){
-        // 构造分页
-        Page<SysUser> pageParam = new Page<>(page,limit);
-        // 初始化查询
-        LambdaQueryWrapper<SysUser> lqw = new LambdaQueryWrapper<>();
-        // 获取条件值
-        String name = sysUserQueryVo.getKeyword();
-        String beginTime = sysUserQueryVo.getCreateTimeBegin();
-        String endTime = sysUserQueryVo.getCreateTimeEnd();
-        if(!StringUtils.isEmpty(name)){
-            lqw.like(SysUser::getName,name);
-        }if(!StringUtils.isEmpty(beginTime)){
-            lqw.ge(SysUser::getCreateTime,beginTime);
-        }if(!StringUtils.isEmpty(endTime)){
-            lqw.le(SysUser::getCreateTime,endTime);
-        }
-        IPage<SysUser> pageModel = sysUserService.page(pageParam,lqw);
+    public Result<IPage<SysUser>> pageIndex(@PathVariable Long page,
+                            @PathVariable Long limit,
+                            SysUserQueryVo sysUserQueryVo){
+        IPage<SysUser> pageModel = sysUserService.pageList(page, limit, sysUserQueryVo);
         return Result.ok(pageModel);
     }
 
     @ApiOperation(value = "获取用户")
     @GetMapping("get/{id}")
     public Result get(@PathVariable Long id){
+
         SysUser user = sysUserService.getById(id);
         return Result.ok(user);
     }

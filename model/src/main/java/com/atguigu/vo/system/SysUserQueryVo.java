@@ -14,7 +14,7 @@ import java.io.Serializable;
  */
 @Data
 public class SysUserQueryVo implements Serializable {
-	
+	 // 相当于GetUserModel
 	private static final long serialVersionUID = 1L;
 	
 	private String keyword;

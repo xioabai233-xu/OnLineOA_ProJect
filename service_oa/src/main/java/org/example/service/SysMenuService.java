@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 
 import java.util.List;
 
+
 public interface SysMenuService extends IService<SysMenu> {
     // 查找子节点
     List<SysMenu> findNodes();
@@ -21,4 +22,12 @@ public interface SysMenuService extends IService<SysMenu> {
     List<RouterVo> findUserMenuListByUserId(Long userid);
 
     List<String> findUserPermissionByUserId(Long userId);
+
+    /**
+     * //
+     *  获取用户权限
+     * @param userId
+     * @return java.util.List<java.lang.String>
+     **/
+    List<String> findUserPermsList(Long userId);
 }

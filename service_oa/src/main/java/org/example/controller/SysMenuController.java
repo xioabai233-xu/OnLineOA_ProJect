@@ -4,10 +4,11 @@ import com.atguigu.model.system.SysMenu;
 import com.atguigu.vo.system.AssignMenuVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.example.common.result.Result;
 import org.example.service.SysMenuService;
+import org.example.common.result.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 @Api(tags = "菜单管理")
@@ -47,10 +48,10 @@ public class SysMenuController {
     }
 
     @ApiOperation(value = "根据角色获取菜单")
-    @GetMapping("toAssign/{roleId}")
-    public Result toAssign(@PathVariable Long roleId) {
-        List<SysMenu> list = sysMenuService.findMenuByRoleId(roleId);
-        return Result.ok(list);
+    @GetMapping("toAssign/{roleID}")
+    public Result<List<SysMenu>> toAssign(@PathVariable Long roleID){
+        List<SysMenu> RoleMenuList = sysMenuService.findMenuByRoleId(roleID);
+        return Result.ok(RoleMenuList);
     }
 
     @ApiOperation(value = "给角色分配权限")

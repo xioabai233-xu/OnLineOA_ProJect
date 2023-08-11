@@ -7,11 +7,11 @@ import com.atguigu.vo.system.MetaVo;
 import com.atguigu.vo.system.RouterVo;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import org.example.common.Exception.OAException;
-import org.example.mapper.SysMenuMapper;
 import org.example.service.SysMenuService;
 import org.example.service.SysRoleMenuService;
 import org.example.util.MenuHelper;
+import org.example.common.Exception.OAException;
+import org.example.mapper.SysMenuMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -100,7 +100,6 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
         List<SysMenu> sysMenuList = null;
         if(userid.longValue() == 1){
             sysMenuList = this.list(new LambdaQueryWrapper<SysMenu>().eq(SysMenu::getStatus,1).orderByAsc(SysMenu::getSortValue));
-
         }else{
             sysMenuList = sysMenuMapper.findMenuListByUserId(userid);
         }
@@ -110,6 +109,7 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
         List<RouterVo> sysRouterList = this.builderMenu(sysMenuTreeList);
 
         return sysRouterList;
+
     }
 
     public static List<RouterVo> builderMenu(List<SysMenu> menus) {
@@ -156,6 +156,8 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
         }
         return routerPath;
     }
+
+
     @Override
     public List<String> findUserPermissionByUserId(Long userId) {
         //超级管理员admin账号id为：1
@@ -168,4 +170,18 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
         List<String> permsList = sysMenuList.stream().filter(item -> item.getType() == 2).map(item -> item.getPerms()).collect(Collectors.toList());
         return permsList;
     }
+
+    @Override
+    public List<String> findUserPermsList(Long userId) {
+        //超级管理员admin账号id为：1
+        List<SysMenu> sysMenuList = null;
+        if (userId.longValue() == 1) {
+            sysMenuList = this.list(new LambdaQueryWrapper<SysMenu>().eq(SysMenu::getStatus, 1));
+        } else {
+            sysMenuList = sysMenuMapper.findMenuListByUserId(userId);
+        }
+        List<String> permsList = sysMenuList.stream().filter(item -> item.getType() == 2).map(item -> item.getPerms()).collect(Collectors.toList());
+        return permsList;
+    }
+
 }

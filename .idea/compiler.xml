@@ -18,7 +18,7 @@
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="OA-Security" options="-parameters" />
-      <module name="OnLineOA_ProJect" options="-parameters" />
+      <module name="OnLineOA_ProJect" options="" />
       <module name="common" options="-parameters" />
       <module name="common_util" options="-parameters" />
       <module name="model" options="-parameters" />

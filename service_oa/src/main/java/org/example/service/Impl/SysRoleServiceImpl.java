@@ -6,24 +6,21 @@ import com.atguigu.vo.system.AssignRoleVo;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.example.mapper.SysRoleMapper;
-import org.example.mapper.SysUserRoleMapper;
 import org.example.service.SysRoleService;
 import org.example.service.SysUserRoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
-public class SysRoleServiceImpl  extends ServiceImpl<SysRoleMapper,SysRole> implements SysRoleService  {
+public class SysRoleServiceImpl  extends ServiceImpl<SysRoleMapper,SysRole> implements SysRoleService {
 
     @Autowired
     private SysUserRoleService sysUserRoleService;
+
 
     @Override
     public Map<String, Object> findRoleByAdminId(Long userId) {
@@ -55,6 +52,7 @@ public class SysRoleServiceImpl  extends ServiceImpl<SysRoleMapper,SysRole> impl
 
         return roleMap;
     }
+
     /// 给用户分配角色
     @Override
     public void doAssign(AssignRoleVo assignRoleVo) {
@@ -73,4 +71,5 @@ public class SysRoleServiceImpl  extends ServiceImpl<SysRoleMapper,SysRole> impl
             sysUserRoleService.save(userRole);
         }
     }
+
 }
